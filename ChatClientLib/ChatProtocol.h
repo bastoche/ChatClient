@@ -1,0 +1,4 @@
+class ChatProtocol {
+public:
+	
+};
