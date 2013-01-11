@@ -20,20 +20,20 @@ void ChatCommandParser::run() {
 	cmatch whisperResult;
 	const regex whisperPattern("/w (\\w*) (\\w*)\n");
 
-	while(true) {		
-		if (fgets(inputBuffer, inputBufferLength, stdin)) {		
-			
-			if (regex_match(inputBuffer, quitPattern)) {			
-				break;
-			} else if (regex_match(inputBuffer, listPattern)) {
-				m_chatClient->listUsers();
-			} else if (regex_match(inputBuffer, whisperResult, whisperPattern)) {
-				const string dest = whisperResult[1];
-				const string message = whisperResult[2];
-				m_chatClient->sendMsgToDest(message.c_str(), dest.c_str());
-			} else {
-				m_chatClient->sendMsgToAll(inputBuffer);
-			}
+	// TODO : remove the \n from the parsed string
+
+	// if the entered text is longer than inputBufferLength, it will be splitted into several messages
+	while(fgets(inputBuffer, inputBufferLength, stdin)) {		
+		if (regex_match(inputBuffer, quitPattern)) {			
+			break;
+		} else if (regex_match(inputBuffer, listPattern)) {
+			m_chatClient->listUsers();
+		} else if (regex_match(inputBuffer, whisperResult, whisperPattern)) {
+			const string dest = whisperResult[1];
+			const string message = whisperResult[2];
+			m_chatClient->sendMsgToDest(message.c_str(), dest.c_str());
+		} else {
+			m_chatClient->sendMsgToAll(inputBuffer);
 		}
 	}
 }

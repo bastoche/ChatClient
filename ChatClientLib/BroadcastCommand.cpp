@@ -3,8 +3,6 @@
 
 using namespace std;
 
-BroadcastCommand::~BroadcastCommand() {}
-
 void BroadcastCommand::setMessage(const char* message) {
 	const size_t messageLength = strlen(message); 
 	const size_t cappedMessageLength = min(messageLength, MAX_BODY_LENGTH - 1);
@@ -16,4 +14,8 @@ void BroadcastCommand::setMessage(const char* message) {
 const char* BroadcastCommand::getMessage() {
 	// will change if we introduce the command code
 	return getBody();
+}
+
+void BroadcastCommand::display() {
+	cout << getMessage() << endl;
 }

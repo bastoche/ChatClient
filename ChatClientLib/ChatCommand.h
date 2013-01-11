@@ -5,18 +5,23 @@ public:
 
 	static const size_t HEADER_LENGTH = 4;
 	static const size_t LENGTH = 512;
+	static const size_t MAX_BODY_LENGTH = LENGTH - HEADER_LENGTH;
 	
 	const char* getHeader();
 	const char* getBody();
 	const char* getData();
 	size_t getBodyLength();
 
-	// allows to set the header and deduce the body length from it
+	// allow to set the header and deduce the body length from it
 	void setHeader(const char* data);
+	char* header();
 	void decodeHeader();
 
-	// allows to set the body
+	// allow to set the body
 	void setBody(const char* data, size_t length);
+	char* body();
+
+	virtual void display();
 	
 protected:		
 	void setBodyLength(size_t length);
@@ -24,17 +29,9 @@ protected:
 	// create the header data from the body length
 	void encodeHeader();
 
-	//static const int commandLength = 4; TODO
-	static const size_t MAX_BODY_LENGTH = LENGTH - HEADER_LENGTH /*- commandLength*/;
-
 
 private:
-	char m_data[HEADER_LENGTH + /*commandLength +*/ MAX_BODY_LENGTH];
+	char m_data[LENGTH];
 	size_t m_bodyLength;
 
-	char* body();
-
-	
-
-	
 };

@@ -7,7 +7,7 @@ ChatCommand::ChatCommand() : m_bodyLength(0) {}
 
 ChatCommand::~ChatCommand() {}    
 
-const char* ChatCommand::getHeader() { return m_data; }
+const char* ChatCommand::getHeader() { return header(); }
 
 const char* ChatCommand::getBody() { return body(); }
 
@@ -18,6 +18,9 @@ size_t ChatCommand::getBodyLength() { return m_bodyLength; }
 void ChatCommand::setHeader(const char* header) {
 	memcpy(m_data, header, HEADER_LENGTH);
 }
+
+char* ChatCommand::header() { return m_data; } 
+
 
 void ChatCommand::setBody(const char* data, size_t length) {
 	// using strncpy means that the null termination is put in the body too
@@ -47,4 +50,8 @@ void ChatCommand::decodeHeader() {
 	strncpy_s(header, HEADER_LENGTH + 1, m_data, HEADER_LENGTH);
 	// compute the body length from the header
 	setBodyLength(atoi(header));
+}
+
+void ChatCommand::display() {
+	cout << "unknown command" << endl;
 }

@@ -86,15 +86,13 @@ void ChatClient::listen() {
 	char inputBuffer[inputBufferLength];
 
 	while (m_listenFlag) {		
-		const bool receiveResult = m_socketWrapper->receiveData(inputBuffer, inputBufferLength);		
-		/* if m_listenFlag is false, we might receive the shutdown message from the server
-		in this case, we do not display it */
+		ChatCommand* command = ChatProtocol::unmarshallCommand(m_socketWrapper);
+		// if m_listenFlag is false, we might receive the shutdown message from the server
 		if (m_listenFlag) { 
-			if (receiveResult) {
-				// display the received message
-				cout << inputBuffer;
+			if (command) {
+				command->display();
 			} else {
-				cerr << "receive error" << endl;
+				cerr << "error unmarshalling command" << endl;
 			}
 		}
 	}
