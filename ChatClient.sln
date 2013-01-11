@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatClientRun", "ChatClientRun\ChatClientRun.vcxproj", "{68C65A86-7966-4447-AAD8-7177CAA0A8FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9593E587-F6AB-438A-A4DE-F665C1C08602} = {9593E587-F6AB-438A-A4DE-F665C1C08602}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatClientLib", "ChatClientLib\ChatClient.vcxproj", "{9593E587-F6AB-438A-A4DE-F665C1C08602}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatClientTest", "ChatClientTest\ChatClientTest.vcxproj", "{968B420D-8151-4DC6-8067-0279C3BBF91C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68C65A86-7966-4447-AAD8-7177CAA0A8FC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{68C65A86-7966-4447-AAD8-7177CAA0A8FC}.Debug|Win32.Build.0 = Debug|Win32
+		{68C65A86-7966-4447-AAD8-7177CAA0A8FC}.Release|Win32.ActiveCfg = Release|Win32
+		{68C65A86-7966-4447-AAD8-7177CAA0A8FC}.Release|Win32.Build.0 = Release|Win32
+		{9593E587-F6AB-438A-A4DE-F665C1C08602}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9593E587-F6AB-438A-A4DE-F665C1C08602}.Debug|Win32.Build.0 = Debug|Win32
+		{9593E587-F6AB-438A-A4DE-F665C1C08602}.Release|Win32.ActiveCfg = Release|Win32
+		{9593E587-F6AB-438A-A4DE-F665C1C08602}.Release|Win32.Build.0 = Release|Win32
+		{968B420D-8151-4DC6-8067-0279C3BBF91C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{968B420D-8151-4DC6-8067-0279C3BBF91C}.Debug|Win32.Build.0 = Debug|Win32
+		{968B420D-8151-4DC6-8067-0279C3BBF91C}.Release|Win32.ActiveCfg = Release|Win32
+		{968B420D-8151-4DC6-8067-0279C3BBF91C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
