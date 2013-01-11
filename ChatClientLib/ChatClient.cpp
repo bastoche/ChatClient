@@ -3,6 +3,8 @@
 #include <process.h>
 #include "SocketWrapper.h"
 #include "ChatCommandParser.h"
+#include "ChatProtocol.h"
+#include "ChatCommand.h"
 
 using namespace std;
 
@@ -49,9 +51,10 @@ void ChatClient::sendMsgToDest(const char* message, const char* dest) {
 	cout << "send message " << message << " to dest " << dest << endl;
 }
 
-void ChatClient::sendMsgToAll(const char* message) {
-	// TODO encode using protocol
-	m_socketWrapper->sendData(message, 1024);
+void ChatClient::sendMsgToAll(const char* message) {	
+	ChatCommand* command = ChatProtocol::buildBroadcastCommand(message);
+	m_socketWrapper->sendData(command->getData(), ChatCommand::LENGTH);
+	delete command;
 }
 
 void ChatClient::listUsers() {
@@ -79,7 +82,7 @@ void ChatClient::listen() {
 	// TODO : decode data using chat protocol
 
 	// initialize a char buffer to hold the next message from the server
-	const int inputBufferLength = 1024;
+	const int inputBufferLength = ChatCommand::LENGTH;
 	char inputBuffer[inputBufferLength];
 
 	while (m_listenFlag) {		

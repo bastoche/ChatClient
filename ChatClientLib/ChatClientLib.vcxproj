@@ -81,6 +81,7 @@
     <ClCompile Include="ChatClient.cpp" />
     <ClCompile Include="ChatCommand.cpp" />
     <ClCompile Include="ChatCommandParser.cpp" />
+    <ClCompile Include="ChatProtocol.cpp" />
     <ClCompile Include="SocketWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
