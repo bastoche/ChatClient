@@ -80,7 +80,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChatClientLib\ChatClient.vcxproj">
+    <ProjectReference Include="..\ChatClientLib\ChatClientLib.vcxproj">
       <Project>{9593e587-f6ab-438a-a4de-f665c1c08602}</Project>
     </ProjectReference>
   </ItemGroup>

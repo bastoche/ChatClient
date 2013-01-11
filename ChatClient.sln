@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatClientRun", "ChatClient
 		{9593E587-F6AB-438A-A4DE-F665C1C08602} = {9593E587-F6AB-438A-A4DE-F665C1C08602}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatClientLib", "ChatClientLib\ChatClient.vcxproj", "{9593E587-F6AB-438A-A4DE-F665C1C08602}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatClientLib", "ChatClientLib\ChatClientLib.vcxproj", "{9593E587-F6AB-438A-A4DE-F665C1C08602}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatClientTest", "ChatClientTest\ChatClientTest.vcxproj", "{968B420D-8151-4DC6-8067-0279C3BBF91C}"
 EndProject
