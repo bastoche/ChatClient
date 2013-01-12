@@ -53,6 +53,7 @@ void ChatClient::sendMsgToDest(const char* message, const char* dest) {
 
 void ChatClient::sendMsgToAll(const char* message) {	
 	ChatCommand* command = ChatProtocol::buildBroadcastCommand(message);
+	// TODO : use getLength instead of LENGTH, needs work server side
 	m_socketWrapper->sendData(command->getData(), ChatCommand::LENGTH);
 	delete command;
 }
@@ -80,10 +81,6 @@ void ChatClient::stopListening() {
 void ChatClient::listen() {
 
 	// TODO : decode data using chat protocol
-
-	// initialize a char buffer to hold the next message from the server
-	const int inputBufferLength = ChatCommand::LENGTH;
-	char inputBuffer[inputBufferLength];
 
 	while (m_listenFlag) {		
 		ChatCommand* command = ChatProtocol::unmarshallCommand(m_socketWrapper);

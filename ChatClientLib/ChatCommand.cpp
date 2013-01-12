@@ -15,6 +15,8 @@ const char* ChatCommand::getData() { return m_data; }
 
 size_t ChatCommand::getBodyLength() { return m_bodyLength; }
 
+size_t ChatCommand::getLength() { return HEADER_LENGTH + m_bodyLength; }
+
 void ChatCommand::setHeader(const char* header) {
 	memcpy(m_data, header, HEADER_LENGTH);
 }

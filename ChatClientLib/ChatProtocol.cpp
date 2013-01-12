@@ -19,7 +19,8 @@ ChatCommand* ChatProtocol::unmarshallCommand(SocketWrapper* socketWrapper) {
 		// read the body
 		cout << "read body" << endl;
 		command.decodeHeader();
-		if (socketWrapper->receiveData(command.body(), ChatCommand::MAX_BODY_LENGTH)) { // TODO : do not use MAX_BODY_LENGTH
+		// TODO : do not use MAX_BODY_LENGTH (need work server-side)
+		if (socketWrapper->receiveData(command.body(), ChatCommand::MAX_BODY_LENGTH)) { 
 			// build the true command
 			cout << "build command" << endl;
 			ChatCommand* result = new BroadcastCommand;

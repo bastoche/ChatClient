@@ -13,17 +13,16 @@ void ChatCommandParser::run() {
 	const int inputBufferLength = 1024;
 	char inputBuffer[inputBufferLength];
 
-	const regex quitPattern("/quit\n");
+	const regex quitPattern("/quit");
 
-	const regex listPattern("/list\n");
+	const regex listPattern("/list");
 
 	cmatch whisperResult;
-	const regex whisperPattern("/w (\\w*) (\\w*)\n");
-
-	// TODO : remove the \n from the parsed string
+	const regex whisperPattern("/w (\\w*) (\\w*)");
 
 	// if the entered text is longer than inputBufferLength, it will be splitted into several messages
-	while(fgets(inputBuffer, inputBufferLength, stdin)) {		
+	while(true) {		
+		cin.getline(inputBuffer, inputBufferLength);
 		if (regex_match(inputBuffer, quitPattern)) {			
 			break;
 		} else if (regex_match(inputBuffer, listPattern)) {
