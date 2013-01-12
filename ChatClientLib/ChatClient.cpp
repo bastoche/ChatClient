@@ -54,7 +54,7 @@ void ChatClient::sendMsgToDest(const char* message, const char* dest) {
 void ChatClient::sendMsgToAll(const char* message) {	
 	ChatCommand* command = ChatProtocol::buildBroadcastCommand(message);
 	// TODO : use getLength instead of LENGTH, needs work server side
-	m_socketWrapper->sendData(command->getData(), ChatCommand::LENGTH);
+	m_socketWrapper->sendData(command->getData(), command->getLength());
 	delete command;
 }
 
