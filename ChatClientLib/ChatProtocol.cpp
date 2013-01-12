@@ -5,13 +5,15 @@
 
 using namespace std;
 
-ChatCommand* ChatProtocol::buildBroadcastCommand(const char* message) {
-	BroadcastCommand* command = new BroadcastCommand();
-	command->setMessage(message);
-	return command;
+ChatProtocol::ChatProtocol(SocketWrapper* socketWrapper) : m_socketWrapper(socketWrapper) {}
+
+void ChatProtocol::sendBroadcastCommand(const char* message) {
+	BroadcastCommand command;
+	command.setMessage(message);
+	sendCommand(&command);	
 }
 
-ChatCommand* ChatProtocol::unmarshallCommand(SocketWrapper* socketWrapper) {
+ChatCommand* ChatProtocol::receiveCommand(SocketWrapper* socketWrapper) {
 	// read the header
 	cout << "read header" << endl;
 	ChatCommand command;
@@ -37,5 +39,9 @@ ChatCommand* ChatProtocol::unmarshallCommand(SocketWrapper* socketWrapper) {
 		return NULL;
 	}
 	
+}
+
+void ChatProtocol::sendCommand(ChatCommand* command) {
+	m_socketWrapper->sendData(command->getData(), command->getLength());
 }
 

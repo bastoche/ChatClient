@@ -3,7 +3,13 @@ class SocketWrapper;
 
 class ChatProtocol {
 public:
-	static ChatCommand* buildBroadcastCommand(const char* message);
+	explicit ChatProtocol(SocketWrapper* socketWrapper);
 
-	static ChatCommand* unmarshallCommand(SocketWrapper* socketWrapper);	
+	void sendBroadcastCommand(const char* message);
+	ChatCommand* receiveCommand(SocketWrapper* socketWrapper);	
+
+private:
+	void sendCommand(ChatCommand* command);
+
+	SocketWrapper* m_socketWrapper;
 };

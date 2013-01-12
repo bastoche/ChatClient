@@ -1,8 +1,11 @@
 class SocketWrapper;
+class ChatProtocol;
 
 class ChatClient {
 public:
-	ChatClient();
+	ChatClient();	
+	virtual ~ChatClient();	
+
 	void run();
 
 	void sendMsgToDest(const char* message, const char* dest);
@@ -18,4 +21,5 @@ private:
 	volatile bool m_listenFlag;
 
 	SocketWrapper* m_socketWrapper;
+	ChatProtocol* m_chatProtocol;
 };

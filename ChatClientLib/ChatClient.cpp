@@ -8,14 +8,15 @@
 
 using namespace std;
 
-ChatClient::ChatClient() : m_socketWrapper(NULL), m_listenFlag(false) {}
+ChatClient::ChatClient() : m_socketWrapper(new SocketWrapper), m_chatProtocol(new ChatProtocol(m_socketWrapper)), m_listenFlag(false) {}
+
+ChatClient::~ChatClient() { 
+	delete m_chatProtocol;
+	delete m_socketWrapper;
+}
 
 // main loop of the program
-void ChatClient::run() {
-
-	// instantiate and initialize the socket wrapper
-	m_socketWrapper = new SocketWrapper;
-
+void ChatClient::run() {	
 	if (m_socketWrapper->init()) {
 		if (connect()) {
 			// TODO 
@@ -34,8 +35,6 @@ void ChatClient::run() {
 			m_socketWrapper->close();
 		}
 	}
-
-	delete m_socketWrapper;
 }
 
 bool ChatClient::connect() {
@@ -52,10 +51,7 @@ void ChatClient::sendMsgToDest(const char* message, const char* dest) {
 }
 
 void ChatClient::sendMsgToAll(const char* message) {	
-	ChatCommand* command = ChatProtocol::buildBroadcastCommand(message);
-	// TODO : use getLength instead of LENGTH, needs work server side
-	m_socketWrapper->sendData(command->getData(), command->getLength());
-	delete command;
+	m_chatProtocol->sendBroadcastCommand(message);
 }
 
 void ChatClient::listUsers() {
@@ -80,10 +76,8 @@ void ChatClient::stopListening() {
 // listening thread main loop
 void ChatClient::listen() {
 
-	// TODO : decode data using chat protocol
-
 	while (m_listenFlag) {		
-		ChatCommand* command = ChatProtocol::unmarshallCommand(m_socketWrapper);
+		ChatCommand* command = m_chatProtocol->receiveCommand(m_socketWrapper);
 		// if m_listenFlag is false, we might receive the shutdown message from the server
 		if (m_listenFlag) { 
 			if (command) {
