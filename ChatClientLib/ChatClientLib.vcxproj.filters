@@ -27,10 +27,10 @@
     <ClCompile Include="BroadcastCommand.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="ChatCommand.cpp">
+    <ClCompile Include="ChatProtocol.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="ChatProtocol.cpp">
+    <ClCompile Include="ChatMessage.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,10 +47,10 @@
     <ClInclude Include="ChatProtocol.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="ChatCommand.h">
+    <ClInclude Include="BroadcastCommand.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="BroadcastCommand.h">
+    <ClInclude Include="ChatMessage.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

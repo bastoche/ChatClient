@@ -1,4 +1,4 @@
-class ChatCommand;
+class ChatMessage;
 class SocketWrapper;
 
 class ChatProtocol {
@@ -6,10 +6,10 @@ public:
 	explicit ChatProtocol(SocketWrapper* socketWrapper);
 
 	void sendBroadcastCommand(const char* message);
-	ChatCommand* receiveCommand(SocketWrapper* socketWrapper);	
+	ChatMessage* receiveCommand(SocketWrapper* socketWrapper);	
 
 private:
-	void sendCommand(ChatCommand* command);
+	void sendCommand(ChatMessage* command);
 
 	SocketWrapper* m_socketWrapper;
 };

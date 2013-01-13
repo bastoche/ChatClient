@@ -1,6 +1,6 @@
-#include "ChatCommand.h"
+#include "ChatMessage.h"
 
-class BroadcastCommand : public ChatCommand {
+class BroadcastCommand : public ChatMessage {
 public:	
 	void setMessage(const char* message);
 	const char* getMessage();

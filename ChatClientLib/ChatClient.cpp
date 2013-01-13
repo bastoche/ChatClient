@@ -4,7 +4,7 @@
 #include "SocketWrapper.h"
 #include "ChatCommandParser.h"
 #include "ChatProtocol.h"
-#include "ChatCommand.h"
+#include "ChatMessage.h"
 
 using namespace std;
 
@@ -77,7 +77,7 @@ void ChatClient::stopListening() {
 void ChatClient::listen() {
 
 	while (m_listenFlag) {		
-		ChatCommand* command = m_chatProtocol->receiveCommand(m_socketWrapper);
+		ChatMessage* command = m_chatProtocol->receiveCommand(m_socketWrapper);
 		// if m_listenFlag is false, we might receive the shutdown message from the server
 		if (m_listenFlag) { 
 			if (command) {

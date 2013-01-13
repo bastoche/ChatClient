@@ -13,18 +13,18 @@ void ChatProtocol::sendBroadcastCommand(const char* message) {
 	sendCommand(&command);	
 }
 
-ChatCommand* ChatProtocol::receiveCommand(SocketWrapper* socketWrapper) {
+ChatMessage* ChatProtocol::receiveCommand(SocketWrapper* socketWrapper) {
 	// read the header
 	cout << "read header" << endl;
-	ChatCommand command;
-	if (socketWrapper->receiveData(command.header(), ChatCommand::HEADER_LENGTH)) {
+	ChatMessage command;
+	if (socketWrapper->receiveData(command.header(), ChatMessage::HEADER_LENGTH)) {
 		// read the body
 		cout << "read body" << endl;
 		command.decodeHeader();		
 		if (socketWrapper->receiveData(command.body(), command.getBodyLength())) { 
 			// build the true command
 			cout << "build command" << endl;
-			ChatCommand* result = new BroadcastCommand;
+			ChatMessage* result = new BroadcastCommand;
 			result->setHeader(command.getHeader());
 			result->decodeHeader();
 			result->setBody(command.getBody(), command.getBodyLength());
@@ -40,7 +40,7 @@ ChatCommand* ChatProtocol::receiveCommand(SocketWrapper* socketWrapper) {
 	
 }
 
-void ChatProtocol::sendCommand(ChatCommand* command) {
+void ChatProtocol::sendCommand(ChatMessage* command) {
 	m_socketWrapper->sendData(command->getData(), command->getLength());
 }
 

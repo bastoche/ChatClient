@@ -1,44 +1,44 @@
-#include "ChatCommand.h"
+#include "ChatMessage.h"
 #include <iostream>
 
 using namespace std;
 
-ChatCommand::ChatCommand() : m_bodyLength(0) {}    
+ChatMessage::ChatMessage() : m_bodyLength(0) {}    
 
-ChatCommand::~ChatCommand() {}    
+ChatMessage::~ChatMessage() {}    
 
-const char* ChatCommand::getHeader() { return header(); }
+const char* ChatMessage::getHeader() { return header(); }
 
-const char* ChatCommand::getBody() { return body(); }
+const char* ChatMessage::getBody() { return body(); }
 
-const char* ChatCommand::getData() { return m_data; }
+const char* ChatMessage::getData() { return m_data; }
 
-size_t ChatCommand::getBodyLength() { return m_bodyLength; }
+size_t ChatMessage::getBodyLength() { return m_bodyLength; }
 
-size_t ChatCommand::getLength() { return HEADER_LENGTH + m_bodyLength; }
+size_t ChatMessage::getLength() { return HEADER_LENGTH + m_bodyLength; }
 
-void ChatCommand::setHeader(const char* header) {
+void ChatMessage::setHeader(const char* header) {
 	memcpy(m_data, header, HEADER_LENGTH);
 }
 
-char* ChatCommand::header() { return m_data; } 
+char* ChatMessage::header() { return m_data; } 
 
 
-void ChatCommand::setBody(const char* data, size_t length) {
+void ChatMessage::setBody(const char* data, size_t length) {
 	// using strncpy means that the null termination is put in the body too
 	strncpy_s(body(), MAX_BODY_LENGTH, data, length);
 }
 
-char* ChatCommand::body() { 
+char* ChatMessage::body() { 
 	return m_data + HEADER_LENGTH;
 }
 
-void ChatCommand::setBodyLength(size_t length) {
+void ChatMessage::setBodyLength(size_t length) {
 	m_bodyLength = length;
 }
 
 // write the body length in the header, formatted as a 4 character string
-void ChatCommand::encodeHeader() {		
+void ChatMessage::encodeHeader() {		
 	// creates an empty array for the 4 characters and the \0
 	char header[HEADER_LENGTH + 1] = "";
 	sprintf_s(header, HEADER_LENGTH + 1, "%4d", m_bodyLength);
@@ -46,7 +46,7 @@ void ChatCommand::encodeHeader() {
 	setHeader(header);
 }
 
-void ChatCommand::decodeHeader() {
+void ChatMessage::decodeHeader() {
 	// copy the header data in a null terminater character buffer
 	char header[HEADER_LENGTH + 1] = "";
 	strncpy_s(header, HEADER_LENGTH + 1, m_data, HEADER_LENGTH);
@@ -54,6 +54,6 @@ void ChatCommand::decodeHeader() {
 	setBodyLength(atoi(header));
 }
 
-void ChatCommand::display() {
+void ChatMessage::display() {
 	cout << "unknown command" << endl;
 }

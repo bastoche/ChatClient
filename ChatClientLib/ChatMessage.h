@@ -1,7 +1,7 @@
-class ChatCommand {
+class ChatMessage {
 public:	
-	ChatCommand();    
-	virtual ~ChatCommand();
+	ChatMessage();    
+	virtual ~ChatMessage();
 
 	static const size_t HEADER_LENGTH = 4;		
 	
