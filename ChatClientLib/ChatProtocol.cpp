@@ -1,6 +1,6 @@
 #include "ChatProtocol.h"
 #include <iostream>
-#include "BroadcastCommand.h"
+#include "ChatCommand.h"
 #include "ChatMessage.h"
 #include "SocketWrapper.h"
 
@@ -24,8 +24,7 @@ ChatCommand* ChatProtocol::receiveCommand() {
 		message.decodeHeader();		
 		if (m_socketWrapper->receiveData(message.body(), message.getBodyLength())) { 
 			// deserialize the message into a command
-			ChatCommand* command = deserialize(message);
-			return command;
+			return deserialize(message);			
 		} else {
 			cerr << "unable to read body" << endl;
 			return NULL;
@@ -49,9 +48,7 @@ ChatMessage* ChatProtocol::serialize(const ChatCommand& command) {
 	return message;
 }
 
-ChatCommand* ChatProtocol::deserialize(const ChatMessage& message){		
-	string broadcastMessage(message.getBody(), message.getBodyLength());
-	BroadcastCommand* command = new BroadcastCommand(broadcastMessage);
-	return command;
+ChatCommand* ChatProtocol::deserialize(const ChatMessage& message){				
+	return ChatCommand::deserialize(message.getBody(), message.getBodyLength());
 }
 

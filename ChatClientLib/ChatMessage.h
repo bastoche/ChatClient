@@ -1,3 +1,5 @@
+#pragma once
+
 // class wrapping the serialized data that will be sent over the network
 class ChatMessage {
 public:	

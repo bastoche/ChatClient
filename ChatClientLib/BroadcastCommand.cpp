@@ -11,8 +11,12 @@ BroadcastCommand::~BroadcastCommand() {}
 string BroadcastCommand::getMessage() const { return m_message; }
 
 size_t BroadcastCommand::serialize(char* buffer) const {
-	const size_t length = m_message.length();
-	memcpy(buffer, m_message.c_str(), length);
+	string data;
+	data += BROADCAST;
+	data += DELIMITER;
+	data += m_message;
+	const size_t length = data.length();
+	memcpy(buffer, data.c_str(), length);
 	return length;
 }
 

@@ -1,6 +1,8 @@
 #include "ChatCommand.h"
 #include <string>
 
+#pragma once
+
 class BroadcastCommand : public ChatCommand {
 public:		
 	BroadcastCommand(std::string message);

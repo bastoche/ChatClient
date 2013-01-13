@@ -85,7 +85,7 @@ void ChatClient::listen() {
 			if (command) {
 				command->display();
 			} else {
-				cerr << "error unmarshalling command" << endl;
+				cerr << "error receiving command" << endl;
 			}
 		}
 		delete command;

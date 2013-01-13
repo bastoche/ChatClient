@@ -1,9 +1,10 @@
 #include <winsock2.h>
 
+#pragma once
+
 // wrapper for the underlying winsock socket
 // the socket is used in blocking mode
 class SocketWrapper {
-
 public:
 	SocketWrapper();	
 	bool init();

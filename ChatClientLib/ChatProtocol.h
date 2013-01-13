@@ -1,3 +1,5 @@
+#pragma once
+
 class ChatCommand;
 class ChatMessage;
 class SocketWrapper;
@@ -10,7 +12,10 @@ public:
 	void sendCommand(const ChatCommand& command);
 	ChatCommand* receiveCommand();	
 
+	// serialize a ChatCommand into a ChatMessage
 	static ChatMessage* serialize(const ChatCommand& command);
+
+	// deserialize a ChatMessage into a ChatCommand, return NULL if the message cannot be deserialized
 	static ChatCommand* deserialize(const ChatMessage& message);
 
 private:

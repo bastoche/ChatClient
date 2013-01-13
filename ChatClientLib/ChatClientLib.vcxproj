@@ -83,6 +83,7 @@
     <ClCompile Include="ChatMessage.cpp" />
     <ClCompile Include="ChatCommandParser.cpp" />
     <ClCompile Include="ChatProtocol.cpp" />
+    <ClCompile Include="LoginCommand.cpp" />
     <ClCompile Include="SocketWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
     <ClInclude Include="ChatMessage.h" />
     <ClInclude Include="ChatCommandParser.h" />
     <ClInclude Include="ChatProtocol.h" />
+    <ClInclude Include="LoginCommand.h" />
     <ClInclude Include="SocketWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
