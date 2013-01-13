@@ -1,8 +1,16 @@
-#include "ChatMessage.h"
+#include "ChatCommand.h"
+#include <string>
 
-class BroadcastCommand : public ChatMessage {
-public:	
-	void setMessage(const char* message);
-	const char* getMessage();
-	void display();
+class BroadcastCommand : public ChatCommand {
+public:		
+	BroadcastCommand(std::string message);
+	virtual ~BroadcastCommand();
+
+	std::string getMessage() const;
+
+	virtual size_t serialize(char* buffer) const;
+
+	virtual void display() const;
+private:
+	std::string m_message;
 };

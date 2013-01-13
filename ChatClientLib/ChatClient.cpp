@@ -5,6 +5,7 @@
 #include "ChatCommandParser.h"
 #include "ChatProtocol.h"
 #include "ChatMessage.h"
+#include "BroadcastCommand.h"
 
 using namespace std;
 
@@ -51,7 +52,8 @@ void ChatClient::sendMsgToDest(const char* message, const char* dest) {
 }
 
 void ChatClient::sendMsgToAll(const char* message) {	
-	m_chatProtocol->sendBroadcastCommand(message);
+	BroadcastCommand command(message);
+	m_chatProtocol->sendCommand(command);
 }
 
 void ChatClient::listUsers() {
@@ -77,7 +79,7 @@ void ChatClient::stopListening() {
 void ChatClient::listen() {
 
 	while (m_listenFlag) {		
-		ChatMessage* command = m_chatProtocol->receiveCommand(m_socketWrapper);
+		ChatCommand* command = m_chatProtocol->receiveCommand();
 		// if m_listenFlag is false, we might receive the shutdown message from the server
 		if (m_listenFlag) { 
 			if (command) {
@@ -86,6 +88,7 @@ void ChatClient::listen() {
 				cerr << "error unmarshalling command" << endl;
 			}
 		}
+		delete command;
 	}
 
 	cout << "end of listening thread" << endl;

@@ -1,34 +1,31 @@
 #include "ChatProtocol.h"
 #include <iostream>
 #include "BroadcastCommand.h"
+#include "ChatMessage.h"
 #include "SocketWrapper.h"
 
 using namespace std;
 
 ChatProtocol::ChatProtocol(SocketWrapper* socketWrapper) : m_socketWrapper(socketWrapper) {}
 
-void ChatProtocol::sendBroadcastCommand(const char* message) {
-	BroadcastCommand command;
-	command.setMessage(message);
-	sendCommand(&command);	
+void ChatProtocol::sendCommand(const ChatCommand& command) {	
+	ChatMessage* message = serialize(command);
+	sendMessage(message);	
+	delete message;
 }
 
-ChatMessage* ChatProtocol::receiveCommand(SocketWrapper* socketWrapper) {
+ChatCommand* ChatProtocol::receiveCommand() {
 	// read the header
 	cout << "read header" << endl;
-	ChatMessage command;
-	if (socketWrapper->receiveData(command.header(), ChatMessage::HEADER_LENGTH)) {
+	ChatMessage message;
+	if (m_socketWrapper->receiveData(message.header(), ChatMessage::HEADER_LENGTH)) {
 		// read the body
 		cout << "read body" << endl;
-		command.decodeHeader();		
-		if (socketWrapper->receiveData(command.body(), command.getBodyLength())) { 
-			// build the true command
-			cout << "build command" << endl;
-			ChatMessage* result = new BroadcastCommand;
-			result->setHeader(command.getHeader());
-			result->decodeHeader();
-			result->setBody(command.getBody(), command.getBodyLength());
-			return result;
+		message.decodeHeader();		
+		if (m_socketWrapper->receiveData(message.body(), message.getBodyLength())) { 
+			// deserialize the message into a command
+			ChatCommand* command = deserialize(message);
+			return command;
 		} else {
 			cerr << "unable to read body" << endl;
 			return NULL;
@@ -36,11 +33,25 @@ ChatMessage* ChatProtocol::receiveCommand(SocketWrapper* socketWrapper) {
 	} else {
 		cerr << "unable to read header" << endl;
 		return NULL;
-	}
-	
+	}	
 }
 
-void ChatProtocol::sendCommand(ChatMessage* command) {
-	m_socketWrapper->sendData(command->getData(), command->getLength());
+void ChatProtocol::sendMessage(ChatMessage* message) {
+	m_socketWrapper->sendData(message->getData(), message->getLength());
+}
+
+ChatMessage* ChatProtocol::serialize(const ChatCommand& command) {
+	ChatMessage* message = new ChatMessage;
+	// TODO check that the message body is big enough to hold the serialized data
+	const size_t length = command.serialize(message->body());
+	message->setBodyLength(length);
+	message->encodeHeader();
+	return message;
+}
+
+ChatCommand* ChatProtocol::deserialize(const ChatMessage& message){		
+	string broadcastMessage(message.getBody(), message.getBodyLength());
+	BroadcastCommand* command = new BroadcastCommand(broadcastMessage);
+	return command;
 }
 

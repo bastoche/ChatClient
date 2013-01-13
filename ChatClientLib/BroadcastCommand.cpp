@@ -1,21 +1,21 @@
 #include "BroadcastCommand.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-void BroadcastCommand::setMessage(const char* message) {
-	const size_t messageLength = strlen(message); 
-	const size_t cappedMessageLength = min(messageLength, MAX_BODY_LENGTH - 1);
-	setBody(message, cappedMessageLength);
-	setBodyLength(cappedMessageLength);
-	encodeHeader();
+BroadcastCommand::BroadcastCommand(string message) : m_message(message) {}
+
+BroadcastCommand::~BroadcastCommand() {}
+
+string BroadcastCommand::getMessage() const { return m_message; }
+
+size_t BroadcastCommand::serialize(char* buffer) const {
+	const size_t length = m_message.length();
+	memcpy(buffer, m_message.c_str(), length);
+	return length;
 }
 
-const char* BroadcastCommand::getMessage() {
-	// will change if we introduce the command code
-	return getBody();
-}
-
-void BroadcastCommand::display() {
+void BroadcastCommand::display() const{
 	cout << getMessage() << endl;
 }

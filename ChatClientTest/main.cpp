@@ -1,29 +1,27 @@
 #include <iostream>
 #include "gtest\gtest.h"
 #include "BroadcastCommand.h"
+#include "ChatProtocol.h"
+#include "ChatMessage.h"
 
 using namespace std;
 
 TEST(BroadcastCommandTest, BroadcastCommandSerialization) {
-	// create a broadcast command from a message
-	BroadcastCommand command;
+	// create a broadcast command from a message	
 	const char* message = "coucou";	
-	command.setMessage(message);
+	BroadcastCommand command(message);
+	ChatMessage* chatMessage = ChatProtocol::serialize(command);
 
 	// check that the body length is equal to the message length
 	const size_t messageLength = strlen(message);
-	EXPECT_EQ(messageLength, command.getBodyLength());
+	EXPECT_EQ(messageLength, chatMessage->getBodyLength());
 
-	// check that decoding the header gives the right body length
-	BroadcastCommand otherCommand;
-	otherCommand.setHeader(command.getHeader());
-	otherCommand.decodeHeader();
-	EXPECT_EQ(messageLength, otherCommand.getBodyLength());
+	// check that deserializing after serializing works as intended		
+	BroadcastCommand* deserializedCommand = (BroadcastCommand*) ChatProtocol::deserialize(*chatMessage);
+	EXPECT_STREQ(message, deserializedCommand->getMessage().c_str());
 
-	// check that extracting the message from the body works as intended
-	otherCommand.setBody(command.getBody(), command.getBodyLength());
-	EXPECT_STREQ(message, otherCommand.getMessage());
-
+	delete chatMessage;
+	delete deserializedCommand;
 }
 
 int main(int argc, char **argv) {

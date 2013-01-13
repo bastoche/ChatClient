@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="BroadcastCommand.cpp" />
     <ClCompile Include="ChatClient.cpp" />
+    <ClCompile Include="ChatCommand.cpp" />
     <ClCompile Include="ChatMessage.cpp" />
     <ClCompile Include="ChatCommandParser.cpp" />
     <ClCompile Include="ChatProtocol.cpp" />
@@ -87,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="BroadcastCommand.h" />
     <ClInclude Include="ChatClient.h" />
+    <ClInclude Include="ChatCommand.h" />
     <ClInclude Include="ChatMessage.h" />
     <ClInclude Include="ChatCommandParser.h" />
     <ClInclude Include="ChatProtocol.h" />
