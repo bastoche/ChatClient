@@ -21,5 +21,5 @@ size_t BroadcastCommand::serialize(char* buffer) const {
 }
 
 void BroadcastCommand::display() const{
-	cout << getMessage() << endl;
+	cout << m_message << endl;
 }

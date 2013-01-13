@@ -8,10 +8,11 @@ using namespace std;
 
 ChatProtocol::ChatProtocol(SocketWrapper* socketWrapper) : m_socketWrapper(socketWrapper) {}
 
-void ChatProtocol::sendCommand(const ChatCommand& command) {	
+bool ChatProtocol::sendCommand(const ChatCommand& command) {	
 	ChatMessage* message = serialize(command);
-	sendMessage(message);	
+	const bool result = sendMessage(message);	
 	delete message;
+	return result;
 }
 
 ChatCommand* ChatProtocol::receiveCommand() {
@@ -35,8 +36,8 @@ ChatCommand* ChatProtocol::receiveCommand() {
 	}	
 }
 
-void ChatProtocol::sendMessage(ChatMessage* message) {
-	m_socketWrapper->sendData(message->getData(), message->getLength());
+bool ChatProtocol::sendMessage(ChatMessage* message) {
+	return m_socketWrapper->sendData(message->getData(), message->getLength());
 }
 
 ChatMessage* ChatProtocol::serialize(const ChatCommand& command) {

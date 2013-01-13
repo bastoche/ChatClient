@@ -19,5 +19,6 @@ public:
 protected:
 	static const char DELIMITER = '\n';
 	static const std::string LOGIN;
+	static const std::string LOGIN_REPLY;
 	static const std::string BROADCAST;
 };

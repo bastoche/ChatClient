@@ -9,7 +9,7 @@ class ChatProtocol {
 public:
 	explicit ChatProtocol(SocketWrapper* socketWrapper);
 	
-	void sendCommand(const ChatCommand& command);
+	bool sendCommand(const ChatCommand& command);
 	ChatCommand* receiveCommand();	
 
 	// serialize a ChatCommand into a ChatMessage
@@ -19,7 +19,7 @@ public:
 	static ChatCommand* deserialize(const ChatMessage& message);
 
 private:
-	void sendMessage(ChatMessage* message);
+	bool sendMessage(ChatMessage* message);
 	
 	SocketWrapper* m_socketWrapper;
 };

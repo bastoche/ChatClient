@@ -6,6 +6,8 @@
 #include "ChatProtocol.h"
 #include "ChatMessage.h"
 #include "BroadcastCommand.h"
+#include "LoginCommand.h"
+#include "LoginReplyCommand.h"
 
 using namespace std;
 
@@ -19,19 +21,22 @@ ChatClient::~ChatClient() {
 // main loop of the program
 void ChatClient::run() {	
 	if (m_socketWrapper->init()) {
-		if (connect()) {
-			// TODO 
-			// login(...);
+		if (connect()) {			
+			if (login()) {
 
-			// start the listening thread that displays messages from the server
-			startListening();
+				// start the listening thread that displays messages from the server
+				startListening();
 
-			// instantiate and run the command parser
-			ChatCommandParser chatCommandParser(this);
-			chatCommandParser.run();
+				// instantiate and run the command parser
+				ChatCommandParser chatCommandParser(this);
+				chatCommandParser.run();
 
-			// clean up
-			stopListening();	
+				// clean up
+				stopListening();	
+
+			} else {
+				cerr << "Unable to log in." << endl;
+			}
 
 			m_socketWrapper->close();
 		}
@@ -42,16 +47,56 @@ bool ChatClient::connect() {
 	return m_socketWrapper->connectToServer();
 }
 
-void ChatClient::login(const char* name) {
-	/* TODO */
+bool ChatClient::login() {	
+	string inputLogin;
+	bool success = false;
+	bool tryAgain = true;	
+
+	while (tryAgain) {
+		// default case : do not try again
+		tryAgain = false;
+
+		// ask the user for his login
+		cout << "Login as: ";
+		getline(cin, inputLogin);
+		LoginCommand command(inputLogin);
+		command.display();
+
+		// send the login command to the server
+		if (m_chatProtocol->sendCommand(command)) {		
+
+			// try to deserialize the next command as a login reply
+			ChatCommand* command = m_chatProtocol->receiveCommand();
+			if (command) {
+				LoginReplyCommand* replyCommand = dynamic_cast<LoginReplyCommand*>(command);
+				if (replyCommand) {					
+					if (replyCommand->getSuccess()) {		
+						// success case
+						success = true;					
+					} else {
+						// login already used, only case when we try again
+						tryAgain = true;
+					}
+					replyCommand->display();
+				} 
+			} 
+			delete command;	
+
+		} else {
+			cerr << "error sending login command" << endl;		
+		}	
+	}
+
+	return success;
+
 }
 
-void ChatClient::sendMsgToDest(const char* message, const char* dest) {
+void ChatClient::sendMsgToDest(const std::string& message, const std::string& dest) {
 	// TODO
 	cout << "send message " << message << " to dest " << dest << endl;
 }
 
-void ChatClient::sendMsgToAll(const char* message) {	
+void ChatClient::sendMsgToAll(const std::string& message) {	
 	BroadcastCommand command(message);
 	m_chatProtocol->sendCommand(command);
 }

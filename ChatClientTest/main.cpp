@@ -1,15 +1,17 @@
 #include <iostream>
+#include <string>
 #include "gtest\gtest.h"
-#include "BroadcastCommand.h"
 #include "ChatProtocol.h"
 #include "ChatMessage.h"
+#include "BroadcastCommand.h"
 #include "LoginCommand.h"
+#include "LoginReplyCommand.h"
 
 using namespace std;
 
 TEST(BroadcastCommandTest, BroadcastCommandSerialization) {
 	// create a broadcast command from a message	
-	const char* message = "coucou";	
+	const string message = "coucou";	
 	BroadcastCommand command(message);
 
 	// serialize it
@@ -17,7 +19,7 @@ TEST(BroadcastCommandTest, BroadcastCommandSerialization) {
 
 	// check that deserializing after serializing works as intended		
 	BroadcastCommand* deserializedCommand = dynamic_cast<BroadcastCommand*>(ChatProtocol::deserialize(*chatMessage));
-	EXPECT_STREQ(message, deserializedCommand->getMessage().c_str());
+	EXPECT_EQ(message, deserializedCommand->getMessage());
 
 	delete chatMessage;
 	delete deserializedCommand;
@@ -25,7 +27,7 @@ TEST(BroadcastCommandTest, BroadcastCommandSerialization) {
 
 TEST(LoginCommandTest, LoginCommandSerialization) {
 	// create a login command from a message	
-	const char* login = "Bob";	
+	const string login = "Bob";	
 	LoginCommand command(login);
 
 	// serialize it
@@ -33,7 +35,25 @@ TEST(LoginCommandTest, LoginCommandSerialization) {
 
 	// check that deserializing after serializing works as intended		
 	LoginCommand* deserializedCommand = dynamic_cast<LoginCommand*>(ChatProtocol::deserialize(*chatMessage));
-	EXPECT_STREQ(login, deserializedCommand->getLogin().c_str());
+	EXPECT_EQ(login, deserializedCommand->getLogin());
+
+	delete chatMessage;
+	delete deserializedCommand;
+}
+
+TEST(LoginReplyCommandTest, LoginReplyCommandSerialization) {
+	// create a login reply command 
+	const string success = "true";
+	const string login = "Bob";		
+	LoginReplyCommand command(success, login);
+
+	// serialize it
+	ChatMessage* chatMessage = ChatProtocol::serialize(command);
+
+	// check that deserializing after serializing works as intended		
+	LoginReplyCommand* deserializedCommand = dynamic_cast<LoginReplyCommand*>(ChatProtocol::deserialize(*chatMessage));
+	EXPECT_TRUE(deserializedCommand->getSuccess());
+	EXPECT_EQ(login, deserializedCommand->getLogin());
 
 	delete chatMessage;
 	delete deserializedCommand;

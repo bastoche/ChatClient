@@ -1,6 +1,7 @@
 #include "ChatCommandParser.h"
 #include <iostream>
 #include <regex>
+#include <string>
 #include "ChatClient.h"
 
 using namespace std;
@@ -10,29 +11,27 @@ ChatCommandParser::ChatCommandParser(ChatClient* chatClient) : m_chatClient(chat
 
 void ChatCommandParser::run() {
 
-	const int inputBufferLength = 1024;
-	char inputBuffer[inputBufferLength];
+
+	string inputString;
 
 	const regex quitPattern("/quit");
 
 	const regex listPattern("/list");
 
-	cmatch whisperResult;
+	smatch whisperResult;
 	const regex whisperPattern("/w (\\w*) (\\w*)");
-
-	// if the entered text is longer than inputBufferLength, it will be splitted into several messages
-	while(true) {		
-		cin.getline(inputBuffer, inputBufferLength);
-		if (regex_match(inputBuffer, quitPattern)) {			
+	
+	while(getline(cin, inputString)) {				
+		if (regex_match(inputString, quitPattern)) {			
 			break;
-		} else if (regex_match(inputBuffer, listPattern)) {
+		} else if (regex_match(inputString, listPattern)) {
 			m_chatClient->listUsers();
-		} else if (regex_match(inputBuffer, whisperResult, whisperPattern)) {
+		} else if (regex_match(inputString, whisperResult, whisperPattern)) {
 			const string dest = whisperResult[1];
 			const string message = whisperResult[2];
 			m_chatClient->sendMsgToDest(message.c_str(), dest.c_str());
 		} else {
-			m_chatClient->sendMsgToAll(inputBuffer);
+			m_chatClient->sendMsgToAll(inputString);
 		}
 	}
 }

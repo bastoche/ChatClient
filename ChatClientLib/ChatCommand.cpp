@@ -2,8 +2,9 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include "LoginCommand.h"
 #include "BroadcastCommand.h"
+#include "LoginCommand.h"
+#include "LoginReplyCommand.h"
 
 using namespace std;
 
@@ -21,21 +22,28 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 	}
 
 	// read the first token to get the 
-	if (tokens.empty() == false) {
+	if (false == tokens.empty()) {
 		const string commandCode = tokens.at(0);
-		if (commandCode == LOGIN) {
+		if (LOGIN == commandCode) {
 			if (tokens.size() >= 2) {
 				return new LoginCommand(tokens.at(1));
 			} else {
 				// TODO : do not allow to send an empty login
 				return new LoginCommand("");
 			}
-		} else if (commandCode == BROADCAST) {
+		} else if (BROADCAST == commandCode) {
 			if (tokens.size() >= 2) {
 				return new BroadcastCommand(tokens.at(1));
 			} else {
 				// TODO : do not allow to send an empty message
 				return new BroadcastCommand("");
+			}
+		} else if (LOGIN_REPLY == commandCode) {
+			if (tokens.size() >= 3) {
+				return new LoginReplyCommand(tokens.at(1), tokens.at(2));
+			} else {
+				cerr << "error trying to deserialize login reply" << endl;
+				return NULL;
 			}
 		} else {
 			cerr << "unknown command code : " << commandCode << endl;
@@ -48,4 +56,5 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 }
 
 const std::string ChatCommand::LOGIN = "login";
+const std::string ChatCommand::LOGIN_REPLY = "login_reply";
 const std::string ChatCommand::BROADCAST = "broadcast";

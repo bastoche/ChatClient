@@ -20,5 +20,5 @@ size_t LoginCommand::serialize(char* buffer) const {
 }
 
 void LoginCommand::display() const {
-	cout << getLogin() << " vient de se connecter." << endl;
+	cout << "Trying to log as : " << m_login << endl;
 }

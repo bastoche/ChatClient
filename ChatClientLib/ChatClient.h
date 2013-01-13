@@ -1,3 +1,5 @@
+#include <string>
+
 #pragma once
 
 class SocketWrapper;
@@ -10,12 +12,12 @@ public:
 
 	void run();
 
-	void sendMsgToDest(const char* message, const char* dest);
-	void sendMsgToAll(const char* message);
+	void sendMsgToDest(const std::string& message, const std::string& dest);
+	void sendMsgToAll(const std::string& message);
 	void listUsers();
 private:	
 	bool connect();
-	void login(const char* name);
+	bool login();
 	void startListening();
 	void listen();
 	void stopListening();
