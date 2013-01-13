@@ -20,8 +20,7 @@ ChatCommand* ChatProtocol::receiveCommand(SocketWrapper* socketWrapper) {
 	if (socketWrapper->receiveData(command.header(), ChatCommand::HEADER_LENGTH)) {
 		// read the body
 		cout << "read body" << endl;
-		command.decodeHeader();
-		// TODO : do not use MAX_BODY_LENGTH (need work server-side)
+		command.decodeHeader();		
 		if (socketWrapper->receiveData(command.body(), command.getBodyLength())) { 
 			// build the true command
 			cout << "build command" << endl;

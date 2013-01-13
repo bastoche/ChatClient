@@ -3,9 +3,7 @@ public:
 	ChatCommand();    
 	virtual ~ChatCommand();
 
-	static const size_t HEADER_LENGTH = 4;	
-	static const size_t MAX_BODY_LENGTH = 512 - HEADER_LENGTH;
-	
+	static const size_t HEADER_LENGTH = 4;		
 	
 	const char* getHeader();
 	const char* getBody();
@@ -25,14 +23,17 @@ public:
 	virtual void display();
 	
 protected:		
+	static const size_t LENGTH = 512;
+	static const size_t MAX_BODY_LENGTH = LENGTH - HEADER_LENGTH;
+
 	void setBodyLength(size_t length);
 
 	// create the header data from the body length
 	void encodeHeader();
 
 
-private:
-	static const size_t LENGTH = HEADER_LENGTH + MAX_BODY_LENGTH;
+private:	
+	
 	char m_data[LENGTH];
 	size_t m_bodyLength;
 
