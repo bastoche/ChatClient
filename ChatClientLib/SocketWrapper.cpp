@@ -1,5 +1,6 @@
 #include "SocketWrapper.h"
 #include <iostream>
+#include "Log.h"
 
 using namespace std;
 
@@ -10,10 +11,10 @@ bool SocketWrapper::init() {
 	m_socket = socket(AF_INET, SOCK_STREAM, 0); 
 
 	if (INVALID_SOCKET == m_socket) {
-		cerr << "error creating socket" << endl;		
+		error("Error creating socket.");
 		return false;
 	} else {
-		cout << "socket created" << endl;		
+		log("socket created");
 		return true;
 	}
 }
@@ -34,10 +35,10 @@ bool SocketWrapper::connectToServer() {
 	// connect the socket to the server
 	const int connectResult = connect(m_socket, (SOCKADDR *) &socketAdress, sizeof(socketAdress));
 	if ( SOCKET_ERROR == connectResult ) {
-		cerr << "unable to connect to server" << endl;				
+		error("Unable to connect to server.");
 		return false;
 	} else {
-		cout << "connection established" << endl;		
+		log("connection established");
 		return true;
 	}
 }
@@ -46,12 +47,12 @@ bool SocketWrapper::connectToServer() {
 bool SocketWrapper::sendData(const char* data, int length) {
 	const int sendResult = send(m_socket, data, length, 0);
 	if ( SOCKET_ERROR == sendResult ) {
-		cerr << "error sending message" << endl;		
+		error("Error while sending data through the socket.");
 		return false;
 	} else {
-		cout << "message sent" << endl;		
-	}
-	return true;
+		log("send success");
+		return true;
+	}	
 }
 
 bool SocketWrapper::receiveData(char* data, int length) {
@@ -59,17 +60,17 @@ bool SocketWrapper::receiveData(char* data, int length) {
 	while (readBytes < length) {
 		const int recvResult = recv(m_socket, data + readBytes, length - readBytes, 0);
 		if (recvResult > 0) {
-			cout << "received something" << endl;					
+			log("received something");					
 			readBytes += recvResult;
 		} else if (0 == recvResult) {
-			cout << "received nothing (maybe because we asked for a shutdown)" << endl;
+			log("received nothing (maybe because we asked for a shutdown)");
 			return false;
 		} else {
-			cerr << "recv failed" << endl;
+			error("Error while receiving data from the socket.");
 			return false;
 		}
 	}
-	cout << "receiving successful" << endl;
+	log("receive success");
 	return true;
 }
 
@@ -83,41 +84,22 @@ bool SocketWrapper::close(){
 bool SocketWrapper::shutdownConnection(){
 	const int shutdownResult = shutdown(m_socket, SD_SEND);
 	if (SOCKET_ERROR == shutdownResult) {
-		cerr << "shutdown error" << endl;
+		error("Error while trying to shutdown socket.");
 		return false;
 	} else {
-		cout << "shutdown sent" << endl;	
+		log("shutdown sent");
 		return true;
 	}	
-
-	// wait for confirmation from peer
-	// in fact this may be intercepted by the listening thread, and we don't really care about this anyway
-	/*const int readBufferLength = 1024; 
-	char readBuffer[readBufferLength];		
-	while (true) {
-		const int recvResult = recv(m_socket, readBuffer, readBufferLength, 0);
-		if (SOCKET_ERROR == recvResult) {
-			cerr << "error reading after shutdown" << endl;					
-			return false;
-		} else if (recvResult != 0) {
-			cout << "received something after shutdown, discarding" << endl;						
-		} else {
-			cout << "shutdown confirmed" << endl;		
-			return true;
-		}
-	}*/
-
-
 }
 
 // close the socket
 bool SocketWrapper::closeConnection(){
 	const int closeResult = closesocket(m_socket);
 	if (SOCKET_ERROR == closeResult) {
-		cerr << "error closing socket" << endl;			
+		error("Error while closing socket");
 		return false;
 	} else {		
-		cout << "socket closed" << endl;						
+		log("socket closed");
 		return true;
 	}
 

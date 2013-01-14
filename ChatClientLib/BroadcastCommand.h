@@ -8,11 +8,11 @@ public:
 	BroadcastCommand(std::string message);
 	virtual ~BroadcastCommand();
 
-	std::string getMessage() const;
-
-	virtual size_t serialize(char* buffer) const;
+	std::string getMessage() const;	
 
 	virtual void display() const;
 private:
 	std::string m_message;
+
+	virtual std::string toString() const;
 };

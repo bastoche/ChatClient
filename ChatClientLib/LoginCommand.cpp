@@ -9,16 +9,14 @@ LoginCommand::~LoginCommand() {}
 
 string LoginCommand::getLogin() const { return m_login; }
 
-size_t LoginCommand::serialize(char* buffer) const {
+void LoginCommand::display() const {
+	cout << "Trying to log in as : " << m_login << endl;
+}
+
+string LoginCommand::toString() const {
 	string data;
 	data += LOGIN;
 	data += DELIMITER;
 	data += m_login;
-	const size_t length = data.length();
-	memcpy(buffer, data.c_str(), length);
-	return length;
-}
-
-void LoginCommand::display() const {
-	cout << "Trying to log as : " << m_login << endl;
+	return data;
 }

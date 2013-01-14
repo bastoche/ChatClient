@@ -3,6 +3,7 @@
 #include "ChatCommand.h"
 #include "ChatMessage.h"
 #include "SocketWrapper.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -17,21 +18,21 @@ bool ChatProtocol::sendCommand(const ChatCommand& command) {
 
 ChatCommand* ChatProtocol::receiveCommand() {
 	// read the header
-	cout << "read header" << endl;
+	log("read header");
 	ChatMessage message;
 	if (m_socketWrapper->receiveData(message.header(), ChatMessage::HEADER_LENGTH)) {
 		// read the body
-		cout << "read body" << endl;
+		log("read body");
 		message.decodeHeader();		
 		if (m_socketWrapper->receiveData(message.body(), message.getBodyLength())) { 
 			// deserialize the message into a command
 			return deserialize(message);			
 		} else {
-			cerr << "unable to read body" << endl;
+			error("Unable to read command body.");
 			return NULL;
 		}
 	} else {
-		cerr << "unable to read header" << endl;
+		error("Unable to read command header.");
 		return NULL;
 	}	
 }

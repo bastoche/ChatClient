@@ -8,6 +8,7 @@
 #include "BroadcastCommand.h"
 #include "LoginCommand.h"
 #include "LoginReplyCommand.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ ChatClient::~ChatClient() {
 }
 
 // main loop of the program
-void ChatClient::run() {	
+void ChatClient::run() {		
 	if (m_socketWrapper->init()) {
 		if (connect()) {			
 			if (login()) {
@@ -53,38 +54,50 @@ bool ChatClient::login() {
 	bool tryAgain = true;	
 
 	while (tryAgain) {
-		// default case : do not try again
-		tryAgain = false;
 
 		// ask the user for his login
-		cout << "Login as: ";
+		cout << "Please login: ";
 		getline(cin, inputLogin);
-		LoginCommand command(inputLogin);
-		command.display();
 
-		// send the login command to the server
-		if (m_chatProtocol->sendCommand(command)) {		
+		if (false == inputLogin.empty()) {
 
-			// try to deserialize the next command as a login reply
-			ChatCommand* command = m_chatProtocol->receiveCommand();
-			if (command) {
-				LoginReplyCommand* replyCommand = dynamic_cast<LoginReplyCommand*>(command);
-				if (replyCommand) {					
-					if (replyCommand->getSuccess()) {		
-						// success case
-						success = true;					
+			LoginCommand command(inputLogin);
+			command.display();
+
+			// send the login command to the server
+			if (m_chatProtocol->sendCommand(command)) {		
+
+				// try to deserialize the next command as a login reply
+				ChatCommand* command = m_chatProtocol->receiveCommand();
+				if (command) {
+					LoginReplyCommand* replyCommand = dynamic_cast<LoginReplyCommand*>(command);
+					if (replyCommand) {					
+						if (replyCommand->getSuccess()) {		
+							// success case
+							success = true;	
+							tryAgain = false;
+						} else {
+							// login already used, only case when we try again
+							tryAgain = true;
+						}
+						replyCommand->display();
 					} else {
-						// login already used, only case when we try again
-						tryAgain = true;
+						error("unable to cast response as reply command");
 					}
-					replyCommand->display();
-				} 
-			} 
-			delete command;	
+				} else {
+					error("unable to receive command after login");
+					tryAgain = false;
+				}
+				delete command;	
 
+			} else {
+				error("Error sending login command.");
+				tryAgain = false;
+			}
 		} else {
-			cerr << "error sending login command" << endl;		
-		}	
+			cout << "Your login must contain at least one character." << endl;
+			tryAgain = true;
+		}
 	}
 
 	return success;
@@ -108,7 +121,7 @@ void ChatClient::listUsers() {
 
 // start a new thread listening to messages from the server
 void ChatClient::startListening() {
-	cout << "start listening" << endl;
+	log("start listening");
 	m_listenFlag = true;
 	// TODO : use the new std thread api 
 	_beginthreadex(NULL, 0, listeningThreadEntryPoint, this, 0, NULL);		
@@ -116,7 +129,7 @@ void ChatClient::startListening() {
 
 // turn off the listen flag to stop the listening thread
 void ChatClient::stopListening() {
-	cout << "stop listening" << endl;
+	log("stop listening");
 	m_listenFlag = false;	
 }
 
@@ -130,13 +143,13 @@ void ChatClient::listen() {
 			if (command) {
 				command->display();
 			} else {
-				cerr << "error receiving command" << endl;
+				error("Error while receiving command.");
 			}
 		}
 		delete command;
 	}
 
-	cout << "end of listening thread" << endl;
+	log("end of listening thread");
 }
 
 // necessary boilerplate to be able to use _beginthreadex

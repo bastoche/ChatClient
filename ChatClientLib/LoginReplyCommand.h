@@ -11,10 +11,10 @@ public:
 	bool getSuccess() const;
 	std::string getLogin() const;
 
-	virtual size_t serialize(char* buffer) const;
-
 	virtual void display() const;
 private:
 	std::string m_success;
 	std::string m_login;
+
+	virtual std::string toString() const;
 };

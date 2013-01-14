@@ -83,6 +83,7 @@
     <ClCompile Include="ChatMessage.cpp" />
     <ClCompile Include="ChatCommandParser.cpp" />
     <ClCompile Include="ChatProtocol.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="LoginCommand.cpp" />
     <ClCompile Include="LoginReplyCommand.cpp" />
     <ClCompile Include="SocketWrapper.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="ChatMessage.h" />
     <ClInclude Include="ChatCommandParser.h" />
     <ClInclude Include="ChatProtocol.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="LoginCommand.h" />
     <ClInclude Include="LoginReplyCommand.h" />
     <ClInclude Include="SocketWrapper.h" />

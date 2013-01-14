@@ -5,10 +5,19 @@
 #include "BroadcastCommand.h"
 #include "LoginCommand.h"
 #include "LoginReplyCommand.h"
+#include "Log.h"
 
 using namespace std;
 
 ChatCommand::~ChatCommand() {}
+
+size_t ChatCommand::serialize(char* buffer) const {
+	string data = toString();
+	const size_t length = data.length();
+	memcpy(buffer, data.c_str(), length);
+	return length;
+}
+
 
 ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 	// interpret the bytes as a string sequence, and split it into a string vector
@@ -28,29 +37,29 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 			if (tokens.size() >= 2) {
 				return new LoginCommand(tokens.at(1));
 			} else {
-				// TODO : do not allow to send an empty login
-				return new LoginCommand("");
+				error("Tried to deserialize login command with empty login.");
+				return NULL;
 			}
 		} else if (BROADCAST == commandCode) {
 			if (tokens.size() >= 2) {
 				return new BroadcastCommand(tokens.at(1));
 			} else {
-				// TODO : do not allow to send an empty message
-				return new BroadcastCommand("");
+				error("Tried to deserialize broadcast command with empty message.");
+				return NULL;
 			}
 		} else if (LOGIN_REPLY == commandCode) {
 			if (tokens.size() >= 3) {
 				return new LoginReplyCommand(tokens.at(1), tokens.at(2));
 			} else {
-				cerr << "error trying to deserialize login reply" << endl;
+				error("Error trying to deserialize login reply.");
 				return NULL;
 			}
 		} else {
-			cerr << "unknown command code : " << commandCode << endl;
+			error("Unknown command code.");
 			return NULL;
 		}
 	} else {
-		cerr << "tried to deserialize empty command" << endl;
+		error("Tried to deserialize an empty command");
 		return NULL;
 	}
 }

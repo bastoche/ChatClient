@@ -10,7 +10,7 @@ public:
 	virtual ~ChatCommand();
 
 	// serialize this command into a byte buffer, returns the length of the serialized data
-	virtual size_t serialize(char* buffer) const = 0;
+	size_t serialize(char* buffer) const;
 
 	virtual void display() const = 0;
 
@@ -21,4 +21,7 @@ protected:
 	static const std::string LOGIN;
 	static const std::string LOGIN_REPLY;
 	static const std::string BROADCAST;
+
+private:
+	virtual std::string toString() const = 0;
 };
