@@ -17,12 +17,18 @@ public:
 	static ChatCommand* deserialize(const char* bytes, size_t length);
 
 protected:
+	// delimiter used when serializing a command into a string
 	static const char DELIMITER = '\n';
-	static const std::string LOGIN;
-	static const std::string LOGIN_REPLY;
+
+	// command codes
 	static const std::string BROADCAST;
+	static const std::string LIST_USERS;	
+	static const std::string LOGIN;
+	static const std::string LOGIN_REPLY;	
+	static const std::string REPLY_USERS;
 	static const std::string WHISPER;
 
 private:
+	// serialize this command into a string
 	virtual std::string toString() const = 0;
 };

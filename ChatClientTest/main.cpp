@@ -25,22 +25,6 @@ TEST(BroadcastCommandTest, BroadcastCommandSerialization) {
 	delete deserializedCommand;
 }
 
-TEST(LoginCommandTest, LoginCommandSerialization) {
-	// create a login command from a message	
-	const string login = "Bob";	
-	LoginCommand command(login);
-
-	// serialize it
-	ChatMessage* chatMessage = ChatProtocol::serialize(command);
-
-	// check that deserializing after serializing works as intended		
-	LoginCommand* deserializedCommand = dynamic_cast<LoginCommand*>(ChatProtocol::deserialize(*chatMessage));
-	EXPECT_EQ(login, deserializedCommand->getLogin());
-
-	delete chatMessage;
-	delete deserializedCommand;
-}
-
 TEST(LoginReplyCommandTest, LoginReplyCommandSerialization) {
 	// create a login reply command 
 	const string success = "true";

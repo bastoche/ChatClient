@@ -2,11 +2,14 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include "Log.h"
 #include "BroadcastCommand.h"
+#include "ListUsersCommand.h"
 #include "LoginCommand.h"
 #include "LoginReplyCommand.h"
-#include "Log.h"
+#include "ReplyUsersCommand.h"
 #include "WhisperCommand.h"
+
 
 using namespace std;
 
@@ -31,17 +34,10 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 		tokens.push_back(token);
 	}
 
-	// read the first token to get the 
+	// read the first token to determine the command class to instantiate, interpret the other tokens as constructor parameters
 	if (false == tokens.empty()) {
 		const string commandCode = tokens.at(0);
-		if (LOGIN == commandCode) {
-			if (tokens.size() >= 2) {
-				return new LoginCommand(tokens.at(1));
-			} else {
-				error("Malformed login command.");
-				return NULL;
-			}
-		} else if (BROADCAST == commandCode) {
+		if (BROADCAST == commandCode) {
 			if (tokens.size() >= 3) {
 				return new BroadcastCommand(tokens.at(1), tokens.at(2));
 			} else {
@@ -51,6 +47,13 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 		} else if (LOGIN_REPLY == commandCode) {
 			if (tokens.size() >= 3) {
 				return new LoginReplyCommand(tokens.at(1), tokens.at(2));
+			} else {
+				error("Malformed login reply command.");
+				return NULL;
+			}
+		} else if (REPLY_USERS == commandCode) {
+			if (tokens.size() >= 2) {
+				return new ReplyUsersCommand(tokens.at(1));
 			} else {
 				error("Malformed login reply command.");
 				return NULL;
@@ -72,7 +75,9 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 	}
 }
 
+const std::string ChatCommand::BROADCAST = "broadcast";
+const std::string ChatCommand::LIST_USERS = "list_users";
 const std::string ChatCommand::LOGIN = "login";
 const std::string ChatCommand::LOGIN_REPLY = "login_reply";
-const std::string ChatCommand::BROADCAST = "broadcast";
+const std::string ChatCommand::REPLY_USERS = "reply_users";
 const std::string ChatCommand::WHISPER = "whisper";

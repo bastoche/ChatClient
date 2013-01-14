@@ -83,9 +83,11 @@
     <ClCompile Include="ChatMessage.cpp" />
     <ClCompile Include="ChatCommandParser.cpp" />
     <ClCompile Include="ChatProtocol.cpp" />
+    <ClCompile Include="ListUsersCommand.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="LoginCommand.cpp" />
     <ClCompile Include="LoginReplyCommand.cpp" />
+    <ClCompile Include="ReplyUsersCommand.cpp" />
     <ClCompile Include="SocketWrapper.cpp" />
     <ClCompile Include="WhisperCommand.cpp" />
   </ItemGroup>
@@ -96,9 +98,11 @@
     <ClInclude Include="ChatMessage.h" />
     <ClInclude Include="ChatCommandParser.h" />
     <ClInclude Include="ChatProtocol.h" />
+    <ClInclude Include="ListUsersCommand.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="LoginCommand.h" />
     <ClInclude Include="LoginReplyCommand.h" />
+    <ClInclude Include="ReplyUsersCommand.h" />
     <ClInclude Include="SocketWrapper.h" />
     <ClInclude Include="WhisperCommand.h" />
   </ItemGroup>

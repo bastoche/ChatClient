@@ -5,10 +5,11 @@
 #include "ChatCommandParser.h"
 #include "ChatProtocol.h"
 #include "ChatMessage.h"
+#include "Log.h"
 #include "BroadcastCommand.h"
+#include "ListUsersCommand.h"
 #include "LoginCommand.h"
 #include "LoginReplyCommand.h"
-#include "Log.h"
 #include "WhisperCommand.h"
 
 using namespace std;
@@ -123,8 +124,9 @@ void ChatClient::sendMsgToAll(const std::string& message) {
 }
 
 void ChatClient::listUsers() {
-	// TODO
-	cout << "list users" << endl;
+	log("list users");
+	ListUsersCommand command;
+	m_chatProtocol->sendCommand(command);
 }
 
 // start a new thread listening to messages from the server
@@ -146,7 +148,7 @@ void ChatClient::listen() {
 
 	while (m_listenFlag) {		
 		ChatCommand* command = m_chatProtocol->receiveCommand();
-		// if m_listenFlag is false, we might receive the shutdown message from the server
+		// if m_listenFlag is false, we might have received the shutdown message from the server
 		if (m_listenFlag) { 
 			if (command) {
 				command->display();
