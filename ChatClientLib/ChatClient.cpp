@@ -9,6 +9,7 @@
 #include "LoginCommand.h"
 #include "LoginReplyCommand.h"
 #include "Log.h"
+#include "WhisperCommand.h"
 
 using namespace std;
 
@@ -110,11 +111,13 @@ bool ChatClient::login() {
 }
 
 void ChatClient::sendMsgToDest(const std::string& message, const std::string& dest) {
-	// TODO
-	cout << "send message " << message << " to dest " << dest << endl;
+	log("send whisper");
+	WhisperCommand command(message, m_login, dest);
+	m_chatProtocol->sendCommand(command);
 }
 
 void ChatClient::sendMsgToAll(const std::string& message) {	
+	log("send broadcast");
 	BroadcastCommand command(message, m_login);
 	m_chatProtocol->sendCommand(command);
 }

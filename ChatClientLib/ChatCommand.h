@@ -21,6 +21,7 @@ protected:
 	static const std::string LOGIN;
 	static const std::string LOGIN_REPLY;
 	static const std::string BROADCAST;
+	static const std::string WHISPER;
 
 private:
 	virtual std::string toString() const = 0;

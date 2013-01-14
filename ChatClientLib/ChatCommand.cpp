@@ -6,6 +6,7 @@
 #include "LoginCommand.h"
 #include "LoginReplyCommand.h"
 #include "Log.h"
+#include "WhisperCommand.h"
 
 using namespace std;
 
@@ -54,6 +55,13 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 				error("Malformed login reply command.");
 				return NULL;
 			}
+		} else if (WHISPER == commandCode) {
+			if (tokens.size() >= 3) {
+				return new WhisperCommand(tokens.at(1), tokens.at(2), tokens.at(3));
+			} else {
+				error("Malformed login reply command.");
+				return NULL;
+			}
 		} else {
 			error("Unknown command code.");
 			return NULL;
@@ -67,3 +75,4 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 const std::string ChatCommand::LOGIN = "login";
 const std::string ChatCommand::LOGIN_REPLY = "login_reply";
 const std::string ChatCommand::BROADCAST = "broadcast";
+const std::string ChatCommand::WHISPER = "whisper";

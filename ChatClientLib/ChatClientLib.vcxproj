@@ -87,6 +87,7 @@
     <ClCompile Include="LoginCommand.cpp" />
     <ClCompile Include="LoginReplyCommand.cpp" />
     <ClCompile Include="SocketWrapper.cpp" />
+    <ClCompile Include="WhisperCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BroadcastCommand.h" />
@@ -99,6 +100,7 @@
     <ClInclude Include="LoginCommand.h" />
     <ClInclude Include="LoginReplyCommand.h" />
     <ClInclude Include="SocketWrapper.h" />
+    <ClInclude Include="WhisperCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
