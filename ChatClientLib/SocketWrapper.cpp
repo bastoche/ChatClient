@@ -19,16 +19,14 @@ bool SocketWrapper::init() {
 	}
 }
 
-// TODO : make these method parameters
-const char* SocketWrapper::ipAdress = "127.0.0.1";
 const int SocketWrapper::port = 5555;
 
 // connect the socket to the server using the above defined configuration
-bool SocketWrapper::connectToServer() {
+bool SocketWrapper::connectToServer(const char* ipAddress) {
 
 	// initialize a socketAdress structure
 	SOCKADDR_IN socketAdress = { 0 }; 
-	socketAdress.sin_addr.s_addr = inet_addr(ipAdress);
+	socketAdress.sin_addr.s_addr = inet_addr(ipAddress);
 	socketAdress.sin_port = htons(port);
 	socketAdress.sin_family = AF_INET;
 

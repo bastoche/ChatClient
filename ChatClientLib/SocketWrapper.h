@@ -8,7 +8,7 @@ class SocketWrapper {
 public:
 	SocketWrapper();	
 	bool init();
-	bool connectToServer();
+	bool connectToServer(const char* ipAddress);
 	bool sendData(const char* data, int length);
 	bool receiveData(char* data, int length);
 	bool close();	

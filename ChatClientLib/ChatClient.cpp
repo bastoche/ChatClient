@@ -51,7 +51,10 @@ void ChatClient::run() {
 }
 
 bool ChatClient::connect() {
-	return m_socketWrapper->connectToServer();
+	string ipAddress;	
+	cout << "Please enter the chat server's ip address: ";
+	getline(cin, ipAddress);
+	return m_socketWrapper->connectToServer(ipAddress.c_str());
 }
 
 bool ChatClient::login() {	
