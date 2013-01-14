@@ -37,21 +37,21 @@ ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 			if (tokens.size() >= 2) {
 				return new LoginCommand(tokens.at(1));
 			} else {
-				error("Tried to deserialize login command with empty login.");
+				error("Malformed login command.");
 				return NULL;
 			}
 		} else if (BROADCAST == commandCode) {
-			if (tokens.size() >= 2) {
-				return new BroadcastCommand(tokens.at(1));
+			if (tokens.size() >= 3) {
+				return new BroadcastCommand(tokens.at(1), tokens.at(2));
 			} else {
-				error("Tried to deserialize broadcast command with empty message.");
+				error("Malformed broadcast command.");
 				return NULL;
 			}
 		} else if (LOGIN_REPLY == commandCode) {
 			if (tokens.size() >= 3) {
 				return new LoginReplyCommand(tokens.at(1), tokens.at(2));
 			} else {
-				error("Error trying to deserialize login reply.");
+				error("Malformed login reply command.");
 				return NULL;
 			}
 		} else {

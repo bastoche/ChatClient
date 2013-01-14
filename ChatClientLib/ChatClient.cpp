@@ -12,7 +12,11 @@
 
 using namespace std;
 
-ChatClient::ChatClient() : m_socketWrapper(new SocketWrapper), m_chatProtocol(new ChatProtocol(m_socketWrapper)), m_listenFlag(false) {}
+ChatClient::ChatClient() : 
+m_socketWrapper(new SocketWrapper), 
+	m_chatProtocol(new ChatProtocol(m_socketWrapper)), 
+	m_listenFlag(false),
+	m_login("") {}
 
 ChatClient::~ChatClient() { 
 	delete m_chatProtocol;
@@ -36,7 +40,7 @@ void ChatClient::run() {
 				stopListening();	
 
 			} else {
-				cerr << "Unable to log in." << endl;
+				error("Unable to log in.");
 			}
 
 			m_socketWrapper->close();
@@ -75,6 +79,7 @@ bool ChatClient::login() {
 						if (replyCommand->getSuccess()) {		
 							// success case
 							success = true;	
+							m_login = replyCommand->getLogin();
 							tryAgain = false;
 						} else {
 							// login already used, only case when we try again
@@ -110,7 +115,7 @@ void ChatClient::sendMsgToDest(const std::string& message, const std::string& de
 }
 
 void ChatClient::sendMsgToAll(const std::string& message) {	
-	BroadcastCommand command(message);
+	BroadcastCommand command(message, m_login);
 	m_chatProtocol->sendCommand(command);
 }
 

@@ -10,7 +10,7 @@ LoginCommand::~LoginCommand() {}
 string LoginCommand::getLogin() const { return m_login; }
 
 void LoginCommand::display() const {
-	cout << "Trying to log in as : " << m_login << endl;
+	cout << "Trying to log in as : " << m_login << "." << endl;
 }
 
 string LoginCommand::toString() const {

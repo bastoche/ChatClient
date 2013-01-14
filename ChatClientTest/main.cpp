@@ -12,7 +12,7 @@ using namespace std;
 TEST(BroadcastCommandTest, BroadcastCommandSerialization) {
 	// create a broadcast command from a message	
 	const string message = "coucou";	
-	BroadcastCommand command(message);
+	BroadcastCommand command(message, "bob");
 
 	// serialize it
 	ChatMessage* chatMessage = ChatProtocol::serialize(command);

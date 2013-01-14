@@ -1,7 +1,7 @@
 #include "Log.h"
 #include <iostream>
 
-static const bool LOG_ENABLED = true;
+static const bool LOG_ENABLED = false;
 static const bool ERROR_ENABLED = true;
 
 void log(const char* message) {	

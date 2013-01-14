@@ -8,7 +8,7 @@ class ChatProtocol;
 class ChatClient {
 public:
 	ChatClient();	
-	virtual ~ChatClient();	
+	~ChatClient();	
 
 	void run();
 
@@ -26,4 +26,5 @@ private:
 
 	SocketWrapper* m_socketWrapper;
 	ChatProtocol* m_chatProtocol;
+	std::string m_login;
 };
