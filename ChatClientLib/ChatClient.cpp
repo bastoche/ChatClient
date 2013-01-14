@@ -68,7 +68,8 @@ bool ChatClient::login() {
 		cout << "Please login: ";
 		getline(cin, inputLogin);
 
-		if (false == inputLogin.empty()) {
+		// a login must not be empty and must not contain any space
+		if ((false == inputLogin.empty()) && (string::npos == inputLogin.find(' '))) {
 
 			LoginCommand command(inputLogin);
 			command.display();
@@ -105,7 +106,7 @@ bool ChatClient::login() {
 				tryAgain = false;
 			}
 		} else {
-			cout << "Your login must contain at least one character." << endl;
+			cout << "Your login must contain at least one character, and no space." << endl;
 			tryAgain = true;
 		}
 	}
