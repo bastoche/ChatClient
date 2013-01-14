@@ -10,8 +10,6 @@ using namespace std::tr1;
 ChatCommandParser::ChatCommandParser(ChatClient* chatClient) : m_chatClient(chatClient) {}
 
 void ChatCommandParser::run() {
-
-
 	string inputString;
 
 	const regex quitPattern("/quit");
@@ -19,7 +17,7 @@ void ChatCommandParser::run() {
 	const regex listPattern("/list");
 
 	smatch whisperResult;
-	const regex whisperPattern("/w (\\w*) (\\w*)");
+	const regex whisperPattern("/w (" + ChatClient::loginRegex + ") (.*)");
 	
 	while(getline(cin, inputString)) {				
 		if (regex_match(inputString, quitPattern)) {			

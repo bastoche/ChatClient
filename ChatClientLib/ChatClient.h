@@ -15,6 +15,8 @@ public:
 	void sendMsgToDest(const std::string& message, const std::string& dest);
 	void sendMsgToAll(const std::string& message);
 	void listUsers();
+
+	static const std::string loginRegex;
 private:	
 	bool connect();
 	bool login();

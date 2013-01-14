@@ -1,6 +1,7 @@
 #include "ChatClient.h"
 #include <iostream>
 #include <process.h>
+#include <regex>
 #include "SocketWrapper.h"
 #include "ChatCommandParser.h"
 #include "ChatProtocol.h"
@@ -13,6 +14,7 @@
 #include "WhisperCommand.h"
 
 using namespace std;
+using namespace std::tr1;
 
 ChatClient::ChatClient() : 
 m_socketWrapper(new SocketWrapper), 
@@ -57,6 +59,9 @@ bool ChatClient::connect() {
 	return m_socketWrapper->connectToServer(ipAddress.c_str());
 }
 
+// a login must not be empty and must not contain any space
+const string ChatClient::loginRegex = "[^ ]+";
+
 bool ChatClient::login() {	
 	string inputLogin;
 	bool success = false;
@@ -67,9 +72,8 @@ bool ChatClient::login() {
 		// ask the user for his login
 		cout << "Please login: ";
 		getline(cin, inputLogin);
-
-		// a login must not be empty and must not contain any space
-		if ((false == inputLogin.empty()) && (string::npos == inputLogin.find(' '))) {
+		
+		if (regex_match(inputLogin, regex(loginRegex))) {
 
 			LoginCommand command(inputLogin);
 			command.display();
