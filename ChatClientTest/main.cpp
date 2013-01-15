@@ -25,6 +25,18 @@ TEST(BroadcastCommandTest, BroadcastCommandSerialization) {
 	delete deserializedCommand;
 }
 
+TEST(BroadcastCommandTest, BroadcastCommandTooLong) {
+	// create a broadcast command from a too long message
+	string message;	
+	for (int i = 0; i <= ChatMessage::MAX_BODY_LENGTH ; ++i) {
+		message += 'a';
+	}
+	BroadcastCommand command(message, "bob");
+
+	// the serialization should fail
+	EXPECT_EQ(NULL, ChatProtocol::serialize(command));
+}
+
 TEST(LoginReplyCommandTest, LoginReplyCommandSerialization) {
 	// create a login reply command 
 	const string success = "true";

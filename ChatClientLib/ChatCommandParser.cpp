@@ -9,6 +9,8 @@ using namespace std::tr1;
 
 ChatCommandParser::ChatCommandParser(ChatClient* chatClient) : m_chatClient(chatClient) {}
 
+static void displayPrompt() { cout << "> "; }
+
 void ChatCommandParser::run() {
 	string inputString;
 
@@ -19,7 +21,7 @@ void ChatCommandParser::run() {
 	smatch whisperResult;
 	const regex whisperPattern("/w (" + ChatClient::loginRegex + ") (.*)");
 	
-	while(getline(cin, inputString)) {				
+	while(getline(cin, inputString)) {						
 		if (regex_match(inputString, quitPattern)) {			
 			break;
 		} else if (regex_match(inputString, listPattern)) {

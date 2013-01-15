@@ -44,10 +44,16 @@ bool ChatProtocol::sendMessage(ChatMessage* message) {
 ChatMessage* ChatProtocol::serialize(const ChatCommand& command) {
 	ChatMessage* message = new ChatMessage;
 	// TODO check that the message body is big enough to hold the serialized data
-	const size_t length = command.serialize(message->body());
-	message->setBodyLength(length);
-	message->encodeHeader();
-	return message;
+	const size_t length = command.getSerializedLength();
+	if (length <= ChatMessage::MAX_BODY_LENGTH) {
+		command.serialize(message->body());
+		message->setBodyLength(length);
+		message->encodeHeader();
+		return message;
+	} else {
+		error("Message too long.");
+		return NULL;
+	}
 }
 
 ChatCommand* ChatProtocol::deserialize(const ChatMessage& message){				

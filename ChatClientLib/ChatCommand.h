@@ -12,6 +12,9 @@ public:
 	// serialize this command into a byte buffer, returns the length of the serialized data
 	size_t serialize(char* buffer) const;
 
+	// returns the length of this command when it is serialized
+	size_t getSerializedLength() const;
+
 	virtual void display() const = 0;
 
 	static ChatCommand* deserialize(const char* bytes, size_t length);

@@ -6,7 +6,9 @@ public:
 	ChatMessage();    
 	virtual ~ChatMessage();
 
+	static const size_t LENGTH = 512;	
 	static const size_t HEADER_LENGTH = 4;		
+	static const size_t MAX_BODY_LENGTH = LENGTH - HEADER_LENGTH;
 		
 	const char* getHeader() const;
 	const char* getBody() const;
@@ -24,9 +26,7 @@ public:
 	void encodeHeader();
 	
 
-private:
-	static const size_t LENGTH = 512;
-	static const size_t MAX_BODY_LENGTH = LENGTH - HEADER_LENGTH;
+private:	
 	char m_data[LENGTH];
 	size_t m_bodyLength;
 

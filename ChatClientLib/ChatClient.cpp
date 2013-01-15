@@ -74,6 +74,7 @@ bool ChatClient::login() {
 		getline(cin, inputLogin);
 		
 		if (regex_match(inputLogin, regex(loginRegex))) {
+			if (inputLogin.length() <= ChatClient::MAX_LOGIN_LENGTH) {
 
 			LoginCommand command(inputLogin);
 			command.display();
@@ -110,6 +111,10 @@ bool ChatClient::login() {
 				tryAgain = false;
 			}
 		} else {
+			cout << "Your login must contain at most " << ChatClient::MAX_LOGIN_LENGTH << " caracters." << endl;
+			tryAgain = true;
+			}
+		} else {
 			cout << "Your login must contain at least one character, and no space." << endl;
 			tryAgain = true;
 		}
@@ -141,7 +146,7 @@ void ChatClient::listUsers() {
 void ChatClient::startListening() {
 	log("start listening");
 	m_listenFlag = true;
-	// TODO : use the new std thread api 
+	// maybe use the new std thread api ?
 	_beginthreadex(NULL, 0, listeningThreadEntryPoint, this, 0, NULL);		
 }
 

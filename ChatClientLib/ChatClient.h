@@ -26,6 +26,8 @@ private:
 	static unsigned __stdcall listeningThreadEntryPoint(void* pThis);
 	volatile bool m_listenFlag;
 
+	static const size_t MAX_LOGIN_LENGTH = 20;
+
 	SocketWrapper* m_socketWrapper;
 	ChatProtocol* m_chatProtocol;
 	std::string m_login;

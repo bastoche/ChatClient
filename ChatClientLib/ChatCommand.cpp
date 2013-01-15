@@ -22,6 +22,11 @@ size_t ChatCommand::serialize(char* buffer) const {
 	return length;
 }
 
+// returns the length of this command when it is serialized
+size_t ChatCommand::getSerializedLength() const {
+	return toString().length();
+}
+
 
 ChatCommand* ChatCommand::deserialize(const char* bytes, size_t length) {
 	// interpret the bytes as a string sequence, and split it into a string vector
