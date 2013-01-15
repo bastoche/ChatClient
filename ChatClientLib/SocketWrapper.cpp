@@ -73,25 +73,6 @@ bool SocketWrapper::receiveData(char* data, int length) {
 }
 
 bool SocketWrapper::close(){
-	const bool shutdownResult = shutdownConnection();
-	const bool closeResult = closeConnection();
-	return (shutdownResult && closeResult);
-}
-
-// shutdown the connection gracefully
-bool SocketWrapper::shutdownConnection(){
-	const int shutdownResult = shutdown(m_socket, SD_SEND);
-	if (SOCKET_ERROR == shutdownResult) {
-		error("Error while trying to shutdown socket.");
-		return false;
-	} else {
-		log("shutdown sent");
-		return true;
-	}	
-}
-
-// close the socket
-bool SocketWrapper::closeConnection(){
 	const int closeResult = closesocket(m_socket);
 	if (SOCKET_ERROR == closeResult) {
 		error("Error while closing socket");
@@ -100,5 +81,4 @@ bool SocketWrapper::closeConnection(){
 		log("socket closed");
 		return true;
 	}
-
 }

@@ -14,8 +14,6 @@ public:
 	bool close();	
 
 private:		
-	bool shutdownConnection();
-	bool closeConnection();	
 
 	SOCKET m_socket;
 
