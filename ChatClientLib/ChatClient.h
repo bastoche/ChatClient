@@ -26,6 +26,7 @@ private:
 	static unsigned __stdcall listeningThreadEntryPoint(void* pThis);
 	volatile bool m_listenFlag;
 
+	// arbitrary limit on login size
 	static const size_t MAX_LOGIN_LENGTH = 20;
 
 	SocketWrapper* m_socketWrapper;
