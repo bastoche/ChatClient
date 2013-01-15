@@ -9,14 +9,22 @@ using namespace std::tr1;
 
 ChatCommandParser::ChatCommandParser(ChatClient* chatClient) : m_chatClient(chatClient) {}
 
-static void displayPrompt() { cout << "> "; }
+static void displayHelp() {
+	cout << "How to speak : write some text then press enter." << endl;
+	cout << "How to see who is online : /list" << endl;
+	cout << "How to whisper to someone : /w name message" << endl;
+	cout << "How to leave : /quit" << endl;
+}
 
 void ChatCommandParser::run() {
+
+	cout << "Type '/help' to display the available commands." << endl;
+	
 	string inputString;
-
-	const regex quitPattern("/quit");
-
+		
+	const regex helpPattern("/help");
 	const regex listPattern("/list");
+	const regex quitPattern("/quit");
 
 	smatch whisperResult;
 	const regex whisperPattern("/w (" + ChatClient::loginRegex + ") (.*)");
@@ -30,6 +38,8 @@ void ChatCommandParser::run() {
 			const string dest = whisperResult[1];
 			const string message = whisperResult[2];
 			m_chatClient->sendMsgToDest(message.c_str(), dest.c_str());
+		} else if (regex_match(inputString, helpPattern)) {
+			displayHelp();
 		} else {
 			m_chatClient->sendMsgToAll(inputString);
 		}
